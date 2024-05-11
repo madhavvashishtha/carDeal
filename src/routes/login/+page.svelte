@@ -1,4 +1,14 @@
 <script>
+
+
+
+    import { onMount } from "svelte";
+   // import { apiData, drinkNames } from './store.js';
+
+onMount(async () => {
+  localStorage.clear(); //ping aattach needed
+  });
+
     import { useForm, validators, HintGroup, Hint, email, required, minLength } from "svelte-use-form";
   
 

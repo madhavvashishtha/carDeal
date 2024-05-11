@@ -6,7 +6,8 @@
 	//import { email } from 'svelte-use-form@latest';
     import { useForm, validators, HintGroup, Hint, email, required, minLength } from "svelte-use-form";
     import{json} from "@sveltejs/kit";
-  
+    import useMeta  from '../store';
+   // import axios from 'axios';
 
         let selected = 'customer'; //defultRole pass 
         const form = useForm();
@@ -17,39 +18,48 @@
         function onChange(event) {
             selected = event.currentTarget.value;
        }
+    
 
        const sendData=async()=>{
         try {
-            console.log($form.password.value+'::'+$form.email.value+':'+selected)
-            const formData = {
-   "username": $form.email.value+'',
-   "password": $form.password.value+'',
-   "role": selected
- };
-   const response = await fetch('https://carbackerrender.onrender.com/api/createUserpost', {
-     method: 'post', mode: "no-cors" ,
-     headers: {
-       'Content-Type': 'application/json'
-     },
-     body: JSON.stringify(formData)
-   }) 
-  .then(response_ => json(response_))
-  .then(data => {
-		console.log(data +':'+data.message+':'+ JSON.stringify(data));;
-   console.log('here:'+response)})
+        const formData = {
+            "username": $form.email.value,
+            "password": $form.password.value,
+            "areacode": $form.areacode.value,
+            "role": selected
+        };
 
-   if (response.ok) {
-     console.log('successCreqat'+response)
-     // Handle success response
-   } else {
-     console.error('Error: not ok creat Responce ');
-     // Handle error response
+        let response =  await fetch('https://carbackerrender.onrender.com/api/createUserpost', {
+            method: 'POST',mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+              
+            },
+            body: JSON.stringify(formData)
+        }).then(res=>res.json())
+        .then(data1=>{
+          console.log(json(data1)+'data get : '+data1.status+':;'+JSON.stringify(data1.tokenGet)+'email;:'+JSON.stringify(data1.email)  +'role;:'+JSON.stringify(data1.role))
+   
+            console.log('setting the store')
+
+            localStorage.setItem('token',JSON.stringify(data1.tokenGet),'email',JSON.stringify(data1.email),'role',JSON.stringify(data1.roles),'areaCode',JSON.stringify(data1.areacode))
+           
+
+        //   useMeta.set({
+        //    useAuthState:'true',
+        //    useRole: JSON.stringify(data1.role),
+        //    useEmail: JSON.stringify(data1.email),
+        //    meta: JSON.stringify(data1.tokenGet),
+        //   } )
+      
+                });
+
+      const data = await response.json(); 
+     console.log(response   +"res-"+data+':' + JSON.stringify(response));
+    } catch (error) {
+        console.error('Error: in create', error);
+    }
    }
- } catch (error) {
-   console.error('Error: in creat', error);
- }
-;
-       }
 
   </script>
   
@@ -58,7 +68,7 @@
         <h1>Welcome creat Account </h1>
     <!-- svelte-ignore a11y-label-has-associated-control -->
     <label style="margin: 13px;">Email:     </label>
-    <input type="email" name="email" use:validators={[required, email]} />
+    <input style="color: black;" type="email" name="email" use:validators={[required, email]} />
     <HintGroup for="email">
       <Hint on="required">This is a mandatory field</Hint>
       <Hint on="email" hideWhenRequired>Email is not valid</Hint>
@@ -66,8 +76,13 @@
     <br>
     <br>
     <!-- svelte-ignore a11y-label-has-associated-control -->
+
+    <label  style="margin: 2px;">Areacode: </label>
+    <input  style="color: black;"  type="number" name="areacode" use:validators={[required,minLength(6)]} />
+
+    <!-- svelte-ignore a11y-label-has-associated-control -->
     <label  style="margin: 2px;">Password: </label>
-    <input style="" type="password" name="password" use:validators={[required,minLength(5)]} />
+    <input  style="color: black;" type="password" name="password" use:validators={[required,minLength(5)]} />
     <Hint for="password" on="required">This is a mandatory field wit minimum of length 5</Hint>
 
     
