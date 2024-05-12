@@ -3,16 +3,19 @@
         import { onMount } from 'svelte';
 
 
-        let offerarray=[{
+        let offerarray={
         Model       :'',
-        colour      :'',
-        fuel        :'',
-        manufacturer:'',
-        model       :'',
-        vehicle     :'',
-        vin         :'',
-        vrm         :'',
-      }];
+        Colour      :'',
+        Fuel        :'',
+        Manufacturer:'',
+        Vehicle     :'',
+        VIN         :'',
+        VRM         :'',
+        urlImg      :''
+      };
+      /**
+	 * @type {number | null}
+	 */
       let price=null;
 
       onMount(async ()=>{
@@ -21,6 +24,7 @@
 
        dealMeta.subscribe((data) => {
             console.log(data);
+            // @ts-ignore
             offerarray=data;
             });
            price=Math.floor(Math.random() * (30000000 - 50000 + 1)) + 50000;
@@ -28,12 +32,19 @@
 
       });
 
-      function dealApply(Model,
-                        Colour      ,
-                        VIN         ,
-                        Fuel        ,
+      // @ts-ignore
+      function dealApply(Model       ,
+                        // @ts-ignore
+                        Colour       ,
+                        // @ts-ignore
+                        VIN          ,
+                        // @ts-ignore
+                        Fuel         ,
+                        // @ts-ignore
                         Manufacturer ,
+                        // @ts-ignore
                         price        ){
+                         
         //pass api to admin rey deal finilize....
       }
 
@@ -43,6 +54,7 @@
 
     <div class="bg-gray-100 p-4 grid " id="container" >
 
+        <!-- svelte-ignore a11y-img-redundant-alt -->
         <img src={offerarray.urlImg}  style="margin: auto;" alt="Image" /> 
         <div class="grid justify-items-start ...">
 <h1 style="font-size: x-large;">
@@ -54,7 +66,7 @@
         <h1>
 
             <button type="button" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            on:click={dealApply(offerarray[i].model,offerarray[i].colour,offerarray[i].vin,offerarray[i].fuel,offerarray[i].manufacturer,{price})}>Buy At Just :$ {price}</button>
+            on:click={dealApply(offerarray.Model,offerarray.Colour,offerarray.VIN,offerarray.Fuel,offerarray.Manufacturer,{price})}>Buy At Just :$ {price}</button>
     
         </div>
 

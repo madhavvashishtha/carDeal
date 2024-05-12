@@ -12,6 +12,7 @@
         import { goto } from '$app/navigation';
 ;
       // import { cookies } from 'cookies';
+      let loadedOffer=false;
       let offerLength=0;
   
       let offerarray=[{
@@ -56,6 +57,7 @@
             offerLength= data1.dealsToOffer.length;
             offerarray=data1.dealsToOffer
           console.log(json(data1)+'offerLength get : '+offerLength+'offers:;'+JSON.stringify(data1.dealsToOffer));
+          loadedOffer=true
        //   const offerContainer = document.getElementById("container");
 
       
@@ -93,6 +95,8 @@
 <h1 style="font-size: xx-large;">Path to your dream car !</h1>
 <div style="margin:auto;">
 
+
+
 <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
   
 
@@ -115,6 +119,22 @@
 
 <h1 style="font-size: xx-large;">Deals Just For You ! make it now</h1>
 
+{#if loadedOffer!=true}
+
+
+<div class='flex space-x-2 justify-center items-center bg-white h-screen dark:invert'>
+
+  <span class='sr-only'>Loading...</span>
+  <br>
+  
+    <br>
+   <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+ <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+ <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
+
+</div>
+
+{/if}
 
 <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4" >
 
