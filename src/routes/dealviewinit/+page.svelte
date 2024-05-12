@@ -29,7 +29,6 @@
             });
            price=Math.floor(Math.random() * (30000000 - 50000 + 1)) + 50000;
 
-
       });
 
       // @ts-ignore
