@@ -1,11 +1,7 @@
-//
 
 <script>
-// @ts-nocheck
-
-    import dealMeta from '../initDeatStore';
-    import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';;
+ 
+	import { onMount } from 'svelte';
 	import { json } from '@sveltejs/kit';
  
       let loadedRrqBull=false;
@@ -14,25 +10,23 @@
       let imgDeal=null;
   
       let purchaseReq=[{
-        colour      :'',
-        fuel        :'',
-        manufacturer:'',
-        model       :'',
-        vehicle     :'',
-        vin         :'',
-        vrm         :'',
+        Colour      :'',
+        Fuel        :'',
+        Manufacturer:'',
+        Model       :'',
+        Vehicle     :'',
+        VIN         :'',
+        VRM         :'',
       }];
       onMount(async ()=>{
-       // console.log('home mount : '+JSON.stringify(useMeta) );
+        console.log('pur list mount email : '+localStorage.getItem('email'));
        try {
         const passData = {
-          email:localStorage.getItem('email'),
-            areaCode:12121,//localStorage.getItem('areaCode'),
-            //reqNo:8,
+          Email:localStorage.getItem('email'),
+          
           
         };
 
-        console.log('req For '+localStorage.getItem('email'));
         let response =  await fetch('https://carbackerrender.onrender.com/api/bounceThPruchReqList', {
             method: 'POST',mode: 'cors',
             headers: {
@@ -42,13 +36,18 @@
             body: JSON.stringify(passData)
         }).then(res=>res.json())
         .then(data1=>{
-            reqLength= data1.result.purchaseReqLis.length;
-            purchaseReq=data1.result.purchaseReqLis
+            console.log(JSON.stringify(data1.result[0].purchaseReqLis)+'offerLength get : '+data1.result[0].purchaseReqLis.length)
 
-          console.log(json(data1)+'reqLength get : '+reqLength+':'+JSON.stringify(data1.result));
-          loadedRrqBull=true
-     
+            reqLength=data1.result[0].purchaseReqLis.length
+;
+            purchaseReq=data1.result[0].purchaseReqLis
+            loadedRrqBull=true;
+
+ 
                 });
+
+                let dt= await response;
+                console.log('await respo : '+response)
     } catch (error) {
         console.error('Error: in create', error);
     }
@@ -57,18 +56,40 @@
 
 
 
-{#each { length: reqLength } as _, i}
-<div class="bg-gray-100 p-4" id="container" >
-   
-    <!-- svelte-ignore a11y-img-redundant-alt -->
-    <img src={imgDeal} alt="Image" />
-    <h1>             {purchaseReq[i].model}</h1>
-    <p> Colour      :{purchaseReq[i].colour}       <br>
-        VIN         :{purchaseReq[i].vin}          <br>
-        Fuel        :{purchaseReq[i].fuel}         <br>
-        Manufacturer:{purchaseReq[i].manufacturer} <br></p>
-        <button type="button" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-       >let's see</button>
+<h1 style="font-size: xx-large;">Deals Just For You ! make it now</h1>
+
+{#if loadedRrqBull!=true}
+
+
+<div class='flex space-x-2 justify-center items-center bg-white h-screen dark:invert'>
+
+  <span class='sr-only'>Loading...</span>
+  <br>
+  
+    <br>
+   <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+ <div class='h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+ <div class='h-8 w-8 bg-black rounded-full animate-bounce'></div>
 
 </div>
-{/each}
+
+{/if}
+
+<div class="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4" >
+
+    <!-- svelte-ignore a11y-img-redundant-alt -->
+    <!-- even not login-->
+    {#each { length: reqLength } as _, i}
+    <div class="bg-gray-100 p-4" id="container" >
+       
+        <img src={imgDeal} alt="Image" />
+        <h1>             {purchaseReq[i].Model}</h1>
+        <p> Colour      :{purchaseReq[i].Colour}       <br>
+            VIN         :{purchaseReq[i].VIN}          <br>
+            Fuel        :{purchaseReq[i].Fuel}         <br>
+            Manufacturer:{purchaseReq[i].Manufacturer} <br></p>
+        
+    
+    </div>
+    {/each}
+    </div>

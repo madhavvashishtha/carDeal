@@ -58,10 +58,10 @@
                          
         //pass api to admin rey deal finilize....
 
-   // console.log('email store : '+localStorage.getItem('email'))
+    console.log('email store : '+localStorage.getItem('email'))
         try {
         const formData = {
-                "Email"       :'q02@q.q',//localStorage.getItem('email'),
+                "Email"       :localStorage.getItem('email'),
                 "Model"       :Model,
                 "Colour"      :Colour,
                 "Fuel"        :Fuel,
@@ -74,7 +74,7 @@
         };
 
         let response = await  fetch('https://carbackerrender.onrender.com/api/purchageRqrInit', {
-            method: 'POST',mode: 'cors',
+            method: 'POST',mode: 'no-cors',
             headers: {
                 "Content-Type": "application/json",
               
@@ -86,7 +86,7 @@
       
                 });
 
-      const data = json(response); 
+      const data =  await response.json(); 
      console.log(response   +"res-"+data+':' + JSON.stringify(response));
     } catch (error) {
         console.error('Error: in create', error);
