@@ -7,7 +7,7 @@
       let loadedRrqBull=false;
       let reqLength=0;
 
-      let imgDeal=null;
+      let imgDeal='https://static.abplive.com/wp-content/uploads/2020/09/10182726/WhatsApp-Image-2020-09-10-at-12.46.07-PM-1.jpeg';
   
       let purchaseReq=[{
         Colour      :'',
@@ -17,6 +17,8 @@
         Vehicle     :'',
         VIN         :'',
         VRM         :'',
+        Price       :'',
+        Note        :''
       }];
       onMount(async ()=>{
         console.log('pur list mount email : '+localStorage.getItem('email'));
@@ -83,11 +85,15 @@
     <div class="bg-gray-100 p-4" id="container" >
        
         <img src={imgDeal} alt="Image" />
-        <h1>             {purchaseReq[i].Model}</h1>
+        <h1 style="font-size: x-large;"> 
+                         {purchaseReq[i].Model}   </h1>
         <p> Colour      :{purchaseReq[i].Colour}       <br>
             VIN         :{purchaseReq[i].VIN}          <br>
             Fuel        :{purchaseReq[i].Fuel}         <br>
-            Manufacturer:{purchaseReq[i].Manufacturer} <br></p>
+            Manufacturer:{purchaseReq[i].Manufacturer} <br>
+            Price       :{purchaseReq[i].Price}        <br>
+            Order State :{purchaseReq[i].Note}         <br>
+          </p>
         
     
     </div>
