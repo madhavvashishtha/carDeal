@@ -3,7 +3,8 @@
 
         import dealMeta from '../initDeatStore';
         import { onMount } from 'svelte';
-        import{json} from "@sveltejs/kit";
+       // import{json} from "@sveltejs/kit";
+        import { goto } from '$app/navigation';
 
 
         let offerarray={
@@ -24,9 +25,10 @@
     Manufacturer: string;
     urlImg: string;
 }>
-	 * @type {number | null}
+
 	 */
-      let price=null;
+    let loadedRrqBull;
+      let price;
 
       onMount(async ()=>{
         console.log('dealMeat :'+dealMeta)
@@ -46,7 +48,7 @@
             // @ts-ignore
             offerarray=data;
             });
-         //  price=Math.floor(Math.random() * (30000000 - 50000 + 1)) + 50000;
+          price=Math.floor(Math.random() * (30000000 - 50000 + 1)) + 50000;
 
 
       // @ts-ignore
@@ -60,7 +62,7 @@
 
     console.log('email store : '+localStorage.getItem('email'))
         try {
-        const formData = {
+        const passData = {
                 "Email"       :localStorage.getItem('email'),
                 "Model"       :Model,
                 "Colour"      :Colour,
@@ -73,23 +75,40 @@
                 "Price"       : price
         };
 
-        let response = await  fetch('https://carbackerrender.onrender.com/api/purchageRqrInit', {
-            method: 'POST',mode: 'no-cors',
+     //   let response = await  fetch('https://carbackerrender.onrender.com/api/purchageRqrInit', {
+        console.log('paddind : '+passData+':'+price)
+      
+        let response =  await fetch('https://carbackerrender.onrender.com/api/purchageRqrInit', {
+            method: 'POST',mode: 'cors',
             headers: {
                 "Content-Type": "application/json",
               
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(passData)
         }).then(res=>res.json())
         .then(data1=>{
+            console.log(JSON.stringify(data1.result)+'offerLength get : ')
+            if(data1.result.acknowledged==true){
 
-      
+            }
+
+           // reqLength=data1.result
+;
+          //  purchaseReq=data1.result
+           loadedRrqBull=true;
+           setTimeout(()=>{
+            goto(`/purchaseReq`,  false )
+           }, 3000)
+          
+          
+
+ 
                 });
 
-      const data =  await response.json(); 
-     console.log(response   +"res-"+data+':' + JSON.stringify(response));
+                let dt= await response;
+                console.log('await respo : '+response)
     } catch (error) {
-        console.error('Error: in create', error);
+        console.log('Error: in create', error);
     }
       }
 
@@ -112,11 +131,22 @@
 
 
             <button type="button" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            on:click={dealApply(offerarray.Model,offerarray.Colour,offerarray.VIN,offerarray.Fuel,offerarray.Manufacturer,{price})}>Buy At Just :$ {price}</button>
-    
+            on:click={dealApply(offerarray.Model,offerarray.Colour,offerarray.VIN,offerarray.Fuel,offerarray.Manufacturer,price)}>Buy At Just :$ {price}</button>
+    <!--
+        click supposed to trigger payment window
+    -->
         </div>
 
        
     </div>
 
+{#if loadedRrqBull==true}
 
+<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg">
+    <p class="text-lg font-semibold">Order Status: Confirmed</p>
+  
+    <p>Your order has been successfully placeed!<br>please wait while its being being confirmed .</p>
+</div>
+
+    
+{/if}
