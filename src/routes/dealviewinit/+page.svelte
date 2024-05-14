@@ -7,6 +7,7 @@
         import { goto } from '$app/navigation';
 
 
+        let process=false;
         let offerarray={
 
     Model: '',
@@ -59,6 +60,7 @@
    async  function dealApply(Model,Colour, VIN,Fuel,Manufacturer ,price ){
                          
         //pass api to admin rey deal finilize....
+        process=true
 
     console.log('email store : '+localStorage.getItem('email'))
         try {
@@ -89,16 +91,18 @@
         .then(data1=>{
             console.log(JSON.stringify(data1.result)+'offerLength get : ')
             if(data1.result.acknowledged==true){
+                process=false
 
+                loadedRrqBull=true;
+           setTimeout(()=>{
+            goto(`/purchaseReq`,  false )
+           }, 3000)
             }
 
            // reqLength=data1.result
 ;
           //  purchaseReq=data1.result
-           loadedRrqBull=true;
-           setTimeout(()=>{
-            goto(`/purchaseReq`,  false )
-           }, 3000)
+        
           
           
 
@@ -126,6 +130,7 @@
         Manufacturer: {offerarray.Manufacturer}<br>
         Fuel        : {offerarray.Fuel}<br>
         VIN         : {offerarray.VIN}<br>
+     
 
         <h1>
 
@@ -140,12 +145,67 @@
        
     </div>
 
+
 {#if loadedRrqBull==true}
 
 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg">
     <p class="text-lg font-semibold">Order Status: Confirmed</p>
   
     <p>Your order has been successfully placeed!<br>please wait while its being being confirmed .</p>
+</div>
+
+    
+{/if}
+
+{#if process==true}
+
+<div class="w-full h-full fixed top-0 left-0 bg-white opacity-75 z-50">
+    <div class="flex justify-center items-center mt-[50vh]">
+      <div class="fas fa-circle-notch fa-spin fa-5x text-violet-600">
+
+<div class="min-h-10 flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70" >
+    <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+        <h1 style="font-size: xx-large;">stay with us</h1>
+        <div class="flex justify-center">
+       
+        <div class="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500" role="status" aria-label="loading">
+           
+            <span class="sr-only">Loading...</span>
+         
+         <div>
+          <p>.</p>
+          <p>...</p>
+          <p>..___..</p>
+          <p>._______.</p>
+          <p>________</p>
+          <p>__________</p>
+          <p>____________</p>
+          <p>_____________</p>
+          <p>______________</p>
+          <p>_______________</p>
+          <p>________________</p>
+          <p>_________________</p>
+          <p>___________________</p>
+          <p>_____________________</p>
+          <p>_______________________</p>
+          <p>__________________________</p>
+          <p>____________________________</p>
+          <p>______________________________</p>
+          <p>________________________________</p>
+          <p>_________________________________</p>
+          <p>__________________________________</p>
+          <p>___________________________________</p>
+          </div>
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
 </div>
 
     
