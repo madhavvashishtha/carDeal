@@ -95,7 +95,7 @@
         <input checked={selected==='dealer'}  on:click={onChange} type="radio" name="Role" value="dealer" /> dealer
     </label>
     <label>
-        <input checked={selected==='admin'}  on:click={onChange} type="radio" name="Role" value="admin" /> admin
+        <input checked={selected==='admin'}  on:click={onChange} type="radio" name="Role" value="admin" /> admin (yes i know ...,will correct it)
     </label>
 
     <br>
